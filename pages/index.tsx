@@ -4,6 +4,7 @@ import styles from '../styles/Home.module.css'
 import PhotoGallery from './photoGallery'
 import InfiniteScroll from 'react-infinite-scroll-component'
 
+
 // interface Photo {
 //   id: string;
 //   urls: string
@@ -26,17 +27,21 @@ export default function Home() {
           console.log(err.response.data)
         })
       }
+      console.log(photos)
   return (
-    <div>
+    <div className={styles.container}>
+      <h1> Photo Gallery </h1>
       <InfiniteScroll 
         dataLength={photos.length}
         next={fetchImages}
         hasMore={true}
         loader={<h4>Loading...</h4>}
       >
-        <div>
+        <div className={styles.gallery} >
           {photos.map((photo: any) => (
-            <PhotoGallery id={photo.id} urls={photo.urls.thumb} />
+            <div key={photo.id}>
+              <PhotoGallery name={photo.user.username} urls={photo.urls.raw} />
+            </div>
             ))}
         </div>
       </InfiniteScroll>
