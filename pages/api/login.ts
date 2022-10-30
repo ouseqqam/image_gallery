@@ -19,7 +19,9 @@ export default async function handler(req: NextApiRequest, res:NextApiResponse){
    try {
         await db.open();
         const userExist = await db.get(user.username)
-		if (userExist) {
+		if (!userExist)
+			return res.status(400).json({ message: "User not found" });
+		else if (userExist) {
             const userExists = userExist as unknown as User
 			if (userExists.password === user.password) {
 				//if user is blocked
@@ -33,9 +35,8 @@ export default async function handler(req: NextApiRequest, res:NextApiResponse){
 			else {
 				res.status(401).json({message: "Invalid password"});
 			}
-            db.close()
 		}
     } catch (error) {
-		res.status(401).json({message: error});
+		return res.status(401).json({message: "User not found"});
 	}	
 }
