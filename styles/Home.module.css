@@ -1,19 +1,5 @@
-.container {
-  max-width: 100%;
-  text-align: center;
-}
-
-
-.gallery {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  align-content: center;
-  gap: 1rem;
-  
-}
-
-.img {
-  border: solid 1px white;
-  border-radius: 10px;   
+body {
+    margin: 20px;
+    padding: 0;
+    text-align: center
 }

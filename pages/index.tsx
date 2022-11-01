@@ -1,9 +1,8 @@
-import styles from '../styles/Home.module.css'
+import ImageGallery from './photoGallery'
 
 export default function Home() {
   return (
-    <div className={styles.container} >
-      Home
+    <div>
     </div>
   )
 }

@@ -26,7 +26,7 @@ export default async function handler(req: NextApiRequest, res:NextApiResponse){
 			if (userExists.password === user.password) {
 				//if user is blocked
 				if (userExists.blocked === 1) {
-					res.status(401).json({message: "User is blocked"});
+					res.status(403).json({message: "User is blocked"});
 				}
 				else {
 					res.status(200).json({message: "Login successful"});
