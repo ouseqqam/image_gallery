@@ -24,12 +24,12 @@
   }
   
   .image {
+    background-image: url("../images/1.jpeg");
     border: 5px solid #ccc;
     border-radius: 10px 0px 0px 10px;
     border-right: none;
     height: 500px;
     width: 400px;
-    background-image: url("../images/1.jpeg");
     background-size: cover;
     background-position: center;
   }

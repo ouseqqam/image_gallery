@@ -1,37 +1,22 @@
-/* .container {
-    max-width: 100%;
+.body {
+    margin: 0px 20px;
     text-align: center;
-  }
+}
   
-  
-  /* .gallery {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    align-content: center;
-    gap: 1rem;
-    
-  }*/
-
-  .body {
-    margin: 20px 0px;
-    /* text-align: center; */
-  }
-  
- .container {
+.container {
   padding: 20px;
   display: grid;
-  grid-template-columns:   repeat(auto-fill, minmax(200px, 1fr));
-  grid-auto-rows: 200px 300px;
-  grid-gap: 50px;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  /* grid-auto-rows: 200px 300px; */
+  grid-gap: 55px;
   grid-auto-flow: dense;
- }
+}
 
- .galleryItem {
+.galleryItem {
   width: 100%;
   height: 100%;
   position: relative;
- }
+}
 
 .galleryItem .image {
   width: 100%;
@@ -42,8 +27,23 @@
 .galleryItem .image img {
   width: 100%;
   height: 100%;
-  object-fit: cover;
-  object-position: 50% 50%;
+  border-radius: 10px;
+}
+
+.underImg {
+  display: flex;
+  justify-content: space-between;
+}
+
+.btnLike {
+  background-color: #fff;
+  border: none;
   cursor: pointer;
-  transition: .5s ease-in-out;
+}
+
+.like {
+  background-size: cover;
+  width: 30px;
+  height: 30px;
+  cursor: pointer;
 }

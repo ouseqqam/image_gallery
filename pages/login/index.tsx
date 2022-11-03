@@ -1,43 +1,48 @@
+import axios from 'axios'
 import { useState } from 'react'
 import styles from './styles/login.module.css'
-
-interface Login {
-    username: string
-    password: string
-}
+import jwt from 'jsonwebtoken'
+import { useRouter } from 'next/router'
 
 
 
 
 const Login = () => {
-    const [login, setLogin] = useState<any>()
-    const [error, setError] = useState<any>()
+    const [username, setUsername] = useState<string>('')
+    const [password, setPassword] = useState<string>('')
+    const [token, setToken] = useState<string>('')
+
+    const router = useRouter()
 
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = event.target
-        setLogin({ ...login, [name]: value })
+        if (name === 'username') {
+            setUsername(value)
+        }
+        else if (name === 'password') {
+            setPassword(value)
+        }
     }
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
-        
-        console.log(login)
-
-
-        const res = await fetch('http://localhost:3000/api/login', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(login)
-        })
-        if (res.status === 200) {
-            console.log('success')
-        } 
-        else if(res.status === 403) {
-            console.log('you\'are blocked')
+        const data = {
+            username: username,
+            password: password
         }
-        else if(res.status === 401) {
-            console.log('wrong username or password')
+        try {
+            const user = await axios.post('http://localhost:3000/api/login', data)
+           setToken(user.data.token)
+            if (token) {
+                router.push(
+                    {
+                        pathname: '/photoGallery',
+
+                        query: { token: token }
+                    }
+                )
+            }
+        } catch (error) {
+            console.log(error)
         }
     }
 
