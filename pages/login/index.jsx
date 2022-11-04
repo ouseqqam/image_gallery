@@ -1,20 +1,20 @@
 import axios from 'axios'
-import { useState } from 'react'
+import { useState, useContext } from 'react'
 import styles from './styles/login.module.css'
-import jwt from 'jsonwebtoken'
-import { useRouter } from 'next/router'
-
-
-
+import Router from 'next/router'
+import ImageGallery from '../imageGallery/index'
 
 const Login = () => {
-    const [username, setUsername] = useState<string>('')
-    const [password, setPassword] = useState<string>('')
-    const [token, setToken] = useState<string>('')
+    const [username, setUsername] = useState('')
+    const [password, setPassword] = useState('')
+    //create context for token  
+    const [token, setToken] = useState('')
+    //useContext to get token from context   
 
-    const router = useRouter()
 
-    const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+
+
+    const handleChange = (event) => {
         const { name, value } = event.target
         if (name === 'username') {
             setUsername(value)
@@ -23,29 +23,30 @@ const Login = () => {
             setPassword(value)
         }
     }
-    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    const handleSubmit = async (e) => {
         e.preventDefault()
         const data = {
             username: username,
             password: password
         }
         try {
-            const user = await axios.post('http://localhost:3000/api/login', data)
-           setToken(user.data.token)
-            if (token) {
-                router.push(
-                    {
-                        pathname: '/photoGallery',
-
-                        query: { token: token }
-                    }
-                )
+            const header =  {
+                'Content-Type': 'application/json'
             }
+            const user = await axios.post('http://localhost:3000/api/login', data, header)
+            // setToken(user.data.token)
+            console.log(user)
+            // if (token) {
+            //     Router.push('/imageGallery')
+            // }
         } catch (error) {
-            console.log(error)
+            console.log(error.response.data)
         }
     }
-
+    if (token) {
+        Router.push('/imageGallery')
+    }
+    else {
     return (
         <div className={styles.flexContainer}>
             <div className={styles.image}></div>
@@ -65,6 +66,7 @@ const Login = () => {
             </div>
         </div>
     );
+    }
 }
  
 export default Login

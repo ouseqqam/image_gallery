@@ -4,19 +4,22 @@ import styles from './styles/gallery.module.css'
 import InfiniteScroll from 'react-infinite-scroll-component'
 import Gallery from './gallery'
 import { useRouter } from 'next/router'
+import React from 'react'
 
 
-// interface Photo {
-//   id: string;
-//   urls: string
-//   user: string
-// }
+
 
 export default function ImageGallery() {
-  const [photos, setPhotos] = useState<any>([]);
+  const [photos, setPhotos] = useState([])
+  const [like, setLike] = useState([])
     useEffect(() => {
         fetchImages();
       }, [])
+      const getLike = async () => {
+        const res = await axios.get("http://localhost:3000/api/like/user1")
+        const data = res.data
+        setLike(data)
+    }
       const fetchImages = () => {
         const url = "https://api.unsplash.com"
         const accessKey = process.env.NEXT_PUBLIC_ACCESS_KEY
@@ -37,9 +40,9 @@ export default function ImageGallery() {
       >
         <div className={styles.container}>
           {
-            photos.map((photo: any) => (
+            photos.map((photo) => (
               <div className={styles.galleryContainer} key={photo.id}>
-                <Gallery name={photo.user.name} urls={photo.urls.small} />
+                <Gallery  like ={like} name={photo.user.name} urls={photo.urls.small} id ={photo.id} />
               </div> 
             ))
           }
