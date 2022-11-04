@@ -1,34 +1,23 @@
 import axios from "axios"
-import { useEffect, useState } from "react"
+import { useState } from "react"
 import styles from "./styles/gallery.module.css"
-import like from "./images/2.png"
-import unlike from "./images/1.png"
+import unlike from "./images/2.png"
+import like from "./images/1.png"
 import Image from 'next/image'
 
-const Gallery = (like, photo) => {
-    const [src, setSrc] = useState(like)
-    const [likeClick, setLikeClick] = useState(false)
+const Gallery = (photo) => {
+    const [src, setSrc] = useState(unlike)
+    const [likeClick, setLikeClick] = useState(like.click)
 
     const handleClick = async () => {
-        setLikeClick(!likeClick)
-        if (likeClick) {
-            setSrc(like)
-        } else {
+        if(likeClick) {
             setSrc(unlike)
-            let data = {
-                id: photo.id,
-                user: "user1",
-                url: photo.urls,
-            }
-            // const likes = await axios.get("http://localhost:3000/api/like/user1")
-            // for (let i = 0; i < likes.data.length; i++) {
-            //     if (likes.data[i].photoId === photo.photoId) {
-            //         setLikeClick(true)
-            //         setSrc(unlike)
-            //         break
-            //     }
-            // }
-            await axios.post('http://localhost:3000/api/like/putLike', data)
+            setLikeClick(false)
+            // await axios.delete("http://localhost:3000/api/like/user1", {data: {photoId: photo.id}})
+        } else {
+            setSrc(like)
+            setLikeClick(true)
+            await axios.post("http://localhost:3000/api/like/user1", {photoId: photo.id})
         }
     }
     return (
@@ -38,7 +27,7 @@ const Gallery = (like, photo) => {
             </div>
             <div className={styles.underImg} >
                 <p>{photo.name}</p>
-                <button onClick={() => handleClick(photo)} className={styles.btnLike}><Image src={src} alt="test" className={styles.like} /></button>
+                <button onClick={handleClick} className={styles.btnLike}><Image src={src} alt="test" className={styles.like} /></button>
             </div>
         </div>
     );
