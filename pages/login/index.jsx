@@ -2,20 +2,20 @@ import axios from 'axios'
 import { useState, useContext, useEffect } from 'react'
 import styles from './styles/login.module.css'
 import router from 'next/router'
+import { useSelector, useDispatch } from 'react-redux'
+import { setToken } from '../redux/slice'
 
 const Login = () => {
     const [username, setUsername] = useState('')
     const [password, setPassword] = useState('')
-    const [token, setToken] = useState('')
-
+    const { token } = useSelector( state => state.token )
+    const dispatch = useDispatch()
     useEffect(() => {
-        const token = localStorage.getItem('token')
-        setToken(token)
-        if (token) {
+        const tokenLocal = localStorage.getItem('token')
+        if (tokenLocal) {
             router.push('/imageGallery')
         }
     }, []);
-
 
     const handleChange = (event) => {
         const { name, value } = event.target
@@ -37,10 +37,11 @@ const Login = () => {
                 'Content-Type': 'application/json'
             }
             const user = await axios.post('http://localhost:3000/api/login', data, header)
-            // setToken(user.data.token)
-            if (user.data.token) {
+            dispatch(setToken(user.data.token))
+            console.log("token", token)
+            if (token) {
                 localStorage.setItem('token', user.data.token)
-                Router.push('/imageGallery')
+                router.push('/imageGallery')
             }
         } catch (error) {
             console.log(error.response?.data)
@@ -55,7 +56,7 @@ const Login = () => {
                         <div className={styles.input}>
                             <input type="text" name="username" placeholder='Username' onChange={handleChange} />
                         </div>
-                        <div className={styles.input}>
+                        <div className={styles.input}> 
                             <input type="password" name="password" placeholder='Password' onChange={handleChange} />
                         </div>
                         <div className={styles.btns}>

@@ -6,19 +6,29 @@ import Gallery from './gallery'
 import router from 'next/router'
 // import like from "./images/2.png"
 // import unlike from "./images/1.png"
+import { useSelector, useDispatch } from 'react-redux'
+import { setToken } from '../redux/slice'
 
 
 export default function ImageGallery() {
   const [photos, setPhotos] = useState([])
   const [like, setLike] = useState([])
+  const { token } = useSelector(state => state.token)
+  const dispatch = useDispatch();
+
   useEffect(() => {
-    const token = localStorage.getItem('token')
-    if (!token) {
-      router.push('/login')
-    }
+    // const localToken = localStorage.getItem('token')
+    // if (!localToken) {
+
+    //   router.push('/login')
+    // }else 
+    // {
+    //   dispatch(setToken(localToken));
+    // }
     fetchImages()
     getLike()
   }, [])
+  console.log("token", token)
   const fetchImages = () => {
   const url = "https://api.unsplash.com"
   const accessKey = process.env.NEXT_PUBLIC_ACCESS_KEY
