@@ -8,8 +8,6 @@ import { setToken } from '../redux/slice'
 const Login = () => {
     const [username, setUsername] = useState('')
     const [password, setPassword] = useState('')
-    const { token } = useSelector( state => state.token )
-    const dispatch = useDispatch()
     useEffect(() => {
         const tokenLocal = localStorage.getItem('token')
         if (tokenLocal) {
@@ -37,8 +35,7 @@ const Login = () => {
                 'Content-Type': 'application/json'
             }
             const user = await axios.post('http://localhost:3000/api/login', data, header)
-            dispatch(setToken(user.data.token))
-            console.log("token", token)
+            const token = user.data.token
             if (token) {
                 localStorage.setItem('token', user.data.token)
                 router.push('/imageGallery')

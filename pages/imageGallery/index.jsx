@@ -12,15 +12,14 @@ import router from 'next/router'
 const ImageGallery = () => {
   const [photos, setPhotos] = useState([])
   const [like, setLike] = useState([])
-  
-  const dispatch = useDispatch();
+  const [logging, setLogging] = useState(false)
 
   useEffect(() => {
-    const likes = getLike()
-    console.log("likes: ", likes)
-    fetchImages()
     getLike()
+    if (logging == true)
+      fetchImages()
   }, [])
+
 
   const fetchImages = () => {
   const url = "https://api.unsplash.com"
@@ -40,10 +39,10 @@ const ImageGallery = () => {
           Authorization: `Bearer ${localToken}`
         }
       })
-      console.log(res.data)
+      setLogging(res.status === 200)  
       setLike(res.data)
     } catch (err) {
-      console.log(err.response.data)
+      setLogging(false)
       router.push('/login')
     } 
   }
@@ -57,24 +56,29 @@ const ImageGallery = () => {
     return false
   }
     return (
-      <div className={styles.body}>
-        <h1> Photo Gallery </h1>
-        <InfiniteScroll 
-          dataLength={photos.length}
-          next={fetchImages}
-          hasMore={true}
-          loader={<h4>Loading...</h4>}
-        >
-          <div className={styles.container}>
-            {
-              photos.map((photo) => (
-                <div className={styles.galleryContainer} key={photo.id}> 
-                  <Gallery like={() => likeState(photo)}  name={photo.user.name} urls={photo.urls.small} id ={photo.id} />
-                </div> 
-              ))
-            }
+      <div>
+        {
+          logging && 
+          <div className={styles.body}>
+            <h1> Photo Gallery </h1>
+            <InfiniteScroll 
+              dataLength={photos.length}
+              next={fetchImages}
+              hasMore={true}
+              loader={<h4>Loading...</h4>}
+            >
+              <div className={styles.container}>
+                {
+                  photos.map((photo) => (
+                    <div className={styles.galleryContainer} key={photo.id}> 
+                      <Gallery like={() => likeState(photo)}  name={photo.user.name} urls={photo.urls.small} id ={photo.id} />
+                    </div> 
+                  ))
+                }
+              </div>
+            </InfiniteScroll>
           </div>
-        </InfiniteScroll>
+        }
       </div>
     )
   }
