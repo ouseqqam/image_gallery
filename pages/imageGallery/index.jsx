@@ -6,29 +6,22 @@ import Gallery from './gallery'
 import router from 'next/router'
 // import like from "./images/2.png"
 // import unlike from "./images/1.png"
-import { useSelector, useDispatch } from 'react-redux'
-import { setToken } from '../redux/slice'
 
 
-export default function ImageGallery() {
+
+const ImageGallery = () => {
   const [photos, setPhotos] = useState([])
   const [like, setLike] = useState([])
-  const { token } = useSelector(state => state.token)
+  
   const dispatch = useDispatch();
 
   useEffect(() => {
-    // const localToken = localStorage.getItem('token')
-    // if (!localToken) {
-
-    //   router.push('/login')
-    // }else 
-    // {
-    //   dispatch(setToken(localToken));
-    // }
+    const likes = getLike()
+    console.log("likes: ", likes)
     fetchImages()
     getLike()
   }, [])
-  console.log("token", token)
+
   const fetchImages = () => {
   const url = "https://api.unsplash.com"
   const accessKey = process.env.NEXT_PUBLIC_ACCESS_KEY
@@ -38,9 +31,21 @@ export default function ImageGallery() {
       console.log(err.response.data)
     })
   }
+
   const getLike = async () => {
-    const likes = await axios.get("http://localhost:3000/api/like/user1")
-    setLike(likes.data)
+    const localToken = localStorage.getItem('token')
+    try {
+      const res = await axios.get('http://localhost:3000/api/like/user1', {
+        headers: {
+          Authorization: `Bearer ${localToken}`
+        }
+      })
+      console.log(res.data)
+      setLike(res.data)
+    } catch (err) {
+      console.log(err.response.data)
+      router.push('/login')
+    } 
   }
 
   const likeState = (photo) => {
@@ -72,4 +77,6 @@ export default function ImageGallery() {
         </InfiniteScroll>
       </div>
     )
-}
+  }
+
+  export default ImageGallery

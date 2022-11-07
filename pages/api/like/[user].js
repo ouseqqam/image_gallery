@@ -1,6 +1,7 @@
 import db from "../db";
+import { protectUser } from "../middleware/mid";
 
-export default async function handler(req, res){
+const  handler = async (req, res) => {
     const data = req.query.user
 	try {
 		db.open()
@@ -14,3 +15,5 @@ export default async function handler(req, res){
 		db.open()
 	}
 }
+
+export default protectUser(handler)
