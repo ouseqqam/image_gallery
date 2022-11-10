@@ -4,6 +4,7 @@ import styles from './styles/gallery.module.css'
 import InfiniteScroll from 'react-infinite-scroll-component'
 import Gallery from './gallery'
 import router from 'next/router'
+import Navbar from './navbar'
 // import like from "./images/2.png"
 // import unlike from "./images/1.png"
 
@@ -12,7 +13,7 @@ import router from 'next/router'
 const ImageGallery = () => {
   const [photos, setPhotos] = useState([])
   const [like, setLike] = useState([])
-  const [logging, setLogging] = useState(false)
+  const [logging, setLogging] = useState(true)
 
   useEffect(() => {
     getLike()
@@ -58,9 +59,9 @@ const ImageGallery = () => {
     return (
       <div>
         {
-          logging && 
+          logging &&
           <div className={styles.body}>
-            <h1> Photo Gallery </h1>
+            <Navbar />
             <InfiniteScroll 
               dataLength={photos.length}
               next={fetchImages}
