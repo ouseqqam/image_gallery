@@ -3,7 +3,7 @@
     justify-content: space-between;
     align-items: center;
     height: 60px;
-    background-image: url('../../../login/images/4.jpeg');
+    background-image: url('../../login/images/4.jpeg');
     background-size: cover;
     background-position: center;
     color: white;
@@ -30,7 +30,7 @@
     font-size: 1.2rem;
 }
 
-.navbar__links li a {
+.navbar__links li {
     text-decoration: none;
     color: white;
     padding: 1rem;
@@ -39,4 +39,12 @@
 
 .navbar__links li:hover {
     background-color: #4b0838;
+}
+
+.navbar__links li button {
+    background-color: transparent;
+    border: none;
+    color: white;
+    font-size: 1.2rem;
+    cursor: pointer;
 }

@@ -1,18 +1,13 @@
 import axios from 'axios'
 import { useEffect, useState } from 'react'
 import styles from './styles/gallery.module.css'
-import InfiniteScroll from 'react-infinite-scroll-component'
-import Gallery from './gallery'
 import router from 'next/router'
+import like from "./images/1.png"
 import Navbar from '../navbar'
-// import like from "./images/2.png"
-// import unlike from "./images/1.png"
+import Image from 'next/image'
 
-
-
-const ImageGallery = () => {
+const Favorite = () => {
   const [photos, setPhotos] = useState([])
-  const [like, setLike] = useState([])
   const [logging, setLogging] = useState(false)
   
   useEffect(() => {
@@ -23,18 +18,11 @@ const ImageGallery = () => {
     }
     else
       setLogging(true)
-      getLike()
-      fetchImages()
+    fetchImages()
   }, [])
 
   const fetchImages = () => {
-  const url = "https://api.unsplash.com"
-  const accessKey = process.env.NEXT_PUBLIC_ACCESS_KEY
-  axios.get(`${url}/photos/random?client_id=${accessKey}&count=60`).then(res => {
-    setPhotos([...photos, ...res.data])
-    }).catch(err => {
-      console.log(err.response?.data)
-    })
+    getLike()
   }
 
   const getLike = async () => {
@@ -45,47 +33,57 @@ const ImageGallery = () => {
           Authorization: `Bearer ${localToken}`
         }
       })
-      setLogging(true)  
-      setLike(res.data)
+      setPhotos(res.data)
+
     } catch (err) {
       console.log(err.response?.data)
     } 
   }
 
-  const likeState = (photo) => {
-    for(let i = 0; i < like.length; i++) {
-      if(like[i].photoId === photo.photoId) {
-        return true
-      }
+  const handleClick = async (photo) => {
+    const localToken = localStorage.getItem('token')
+    try {
+        const data = {
+            id: photo.id
+        }
+        const res = await axios.post('http://localhost:3000/api/like/deleteLike', data, {
+            headers: {
+                Authorization: `Bearer ${localToken}`
+            }
+        })
+        setPhotos(photos.filter((item) => item.id !== photo.id))
+        
+    } catch (err) {
+        console.log(err.response?.data)
     }
-    return false
-  }
+}
     return (
       <div>
         {
           logging &&
           <div className={styles.body}>
             <Navbar />
-            <InfiniteScroll 
-              dataLength={photos.length}
-              next={fetchImages}
-              hasMore={true}
-              loader={<h4>Loading...</h4>}
-            >
               <div className={styles.container}>
                 {
                   photos.map((photo) => (
                     <div className={styles.galleryContainer} key={photo.id}> 
-                      <Gallery like={() => likeState(photo)}  name={photo.user.name} urls={photo.urls.small} id ={photo.id} />
+                        <div className={styles.galleryItem}>
+                            <div className={styles.image}>
+                                <img src={photo.url} alt="favorite photo" />
+                            </div>
+                            <div className={styles.underImg} >
+                                <p>{photo.name}</p>
+                                <button onClick={() => handleClick(photo)} className={styles.btnLike}><Image src={like} alt="test" className={styles.like} /></button>
+                            </div>
+                        </div>
                     </div> 
                   ))
                 }
               </div>
-            </InfiniteScroll>
           </div>
         }
       </div>
     )
   }
 
-  export default ImageGallery
+  export default Favorite

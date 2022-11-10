@@ -83,3 +83,9 @@
     cursor: pointer;
     background-color: black;
 }
+
+.error {
+    color: red;
+    font-size: 18px;
+    margin: 10px;
+}

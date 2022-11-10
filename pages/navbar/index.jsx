@@ -1,5 +1,14 @@
 import styles from './styles/navbar.module.css'
+import axios from 'axios'
+import router from 'next/router'
 
+const handleClick = async () => {
+    const localToken = localStorage.getItem('token')
+    if (localToken) {
+        localStorage.removeItem('token')
+        router.push('/login')
+    }
+}
 
 
 const Navbar =  () => {
@@ -11,8 +20,8 @@ const Navbar =  () => {
             <div className={styles.navbar__links}>
                 <ul>
                     <li><a href="/imageGallery">Home</a></li>
-                    <li><a href="#">Favorite</a></li>
-                    <li><a href="#">Logout</a></li>
+                    <li><a href="/favorite">Favorite</a></li>
+                    <li><button onClick={handleClick} >Logout</button></li>
                 </ul>
             </div>
         </div>

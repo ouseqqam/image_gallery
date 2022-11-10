@@ -8,6 +8,7 @@ import { setToken } from '../redux/slice'
 const Login = () => {
     const [username, setUsername] = useState('')
     const [password, setPassword] = useState('')
+    const [error, setError] = useState('')
     useEffect(() => {
         const tokenLocal = localStorage.getItem('token')
         if (tokenLocal) {
@@ -41,7 +42,7 @@ const Login = () => {
                 router.push('/imageGallery')
             }
         } catch (error) {
-            console.log(error.response?.data)
+            setError(error.response?.data.message)
         }
     }
         return (
@@ -60,6 +61,12 @@ const Login = () => {
                             <input className={styles.btn} type="submit" value="Login" />
                         </div>
                     </form>
+                    {
+                        error &&
+                        <div className={styles.error}>
+                            <p>{error}</p>
+                        </div>
+                    }
                 </div>
             </div>
         );

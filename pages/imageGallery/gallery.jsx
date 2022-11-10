@@ -1,5 +1,5 @@
 import axios from "axios"
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import styles from "./styles/gallery.module.css"
 import unlike from "./images/2.png"
 import like from "./images/1.png"
@@ -9,15 +9,49 @@ const Gallery = (photo) => {
     const [src, setSrc] = useState(unlike)
     const [likeClick, setLikeClick] = useState(like.click)
 
-    const handleClick = async () => {
-        if(likeClick) {
-            setSrc(unlike)
-            setLikeClick(false)
-            // await axios.delete("http://localhost:3000/api/like/user1", {data: {photoId: photo.id}})
-        } else {
+    useEffect(() => {
+        if (photo.likeState === true) {
             setSrc(like)
-            setLikeClick(true)
-            await axios.post("http://localhost:3000/api/like/user1", {photoId: photo.id})
+        } else {
+            setSrc(unlike)
+        }
+    }, []);
+
+    const handleClick = async () => {
+        const localToken = localStorage.getItem('token')
+        if(likeClick) {
+            try {
+                const data = {
+                    id : photo.id
+                }
+                const res = await axios.post("http://localhost:3000/api/like/deleteLike", data, {
+                    headers: {
+                        Authorization: `Bearer ${localToken}`
+                        }
+                    })
+                setSrc(unlike)
+                setLikeClick(false)
+            } catch (err) {
+                console.log(err)
+            }
+        } else {
+            try {
+                const data = {
+                    id: photo.id,
+                    url: photo.urls,
+                    name: photo.name,
+                }
+                const res = await axios.post("http://localhost:3000/api/like/putLike", data, {
+                    headers: {
+                        Authorization: `Bearer ${localToken}`
+                    }
+                })
+                setSrc(like)
+                setLikeClick(true)
+                console.log(res.data?.message)
+            } catch (err) {
+                console.log(err.response?.data)
+            }
         }
     }
     return (

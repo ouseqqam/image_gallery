@@ -13,17 +13,14 @@ export default async function handler(req, res){
 		const userExists = await db.get(user.username)
 		if (userExists) {
 			if (userExists.password === user.password) {
-				//if user is blocked
 				if (userExists.blocked === 1) {
 					res.status(403).json({message: "User is blocked"});
 				}
 				else {
-					//add id to user1 like array in db
-					console.log(userExists)
 					const token =  {
 							token: jwt.sign({
 								username: user.username,
-							}, "hello")
+							}, "hello", {expiresIn: "1h"})
 						}
 					res.status(200).json(token);
 				}
@@ -34,6 +31,6 @@ export default async function handler(req, res){
 		}
 		db.close()
     } catch (error) {
-		return res.status(401).send("User not found")
+		return res.status(401).send({message: "User not found"})
 	}	
 }

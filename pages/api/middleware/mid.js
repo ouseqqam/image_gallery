@@ -11,7 +11,7 @@ export const protectUser = handler => (req, res) => {
     }
     try {
         const user = verify(token, "hello")
-        req.user = user
+        req.user = user.username
         return handler(req, res)
     }
     catch (error) {
