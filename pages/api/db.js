@@ -4,7 +4,7 @@ const { Level } = require('level')
 const db = new Level('./pages/api/db', { valueEncoding: 'json' })
 
 db.open()
-db.put('user1',
+db.put('muser1',
     {
         "username": "muser1",
         "password": "mpassword1",
@@ -13,7 +13,7 @@ db.put('user1',
     }
 )
 
-db.put('user2',
+db.put('muser2',
     {
         "username": "muser2",
         "password": "mpassword2",
@@ -22,7 +22,7 @@ db.put('user2',
     }
 )
 
-db.put('user3',
+db.put('muser3',
     {
         "username": "muser3",
         "password": "mpassword3",
