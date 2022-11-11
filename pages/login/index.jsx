@@ -1,9 +1,8 @@
 import axios from 'axios'
-import { useState, useContext, useEffect } from 'react'
+import { useState, useEffect } from 'react'
 import styles from './styles/login.module.css'
 import router from 'next/router'
-import { useSelector, useDispatch } from 'react-redux'
-import { setToken } from '../redux/slice'
+
 
 const Login = () => {
     const [username, setUsername] = useState('')
