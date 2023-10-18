@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react'
 import styles from './styles/gallery.module.css'
 import router from 'next/router'
 import like from "./images/1.png"
-import Navbar from '../navbar'
+import Navbar from '../../components/navbar'
 import Image from 'next/image'
 
 const Favorite = () => {

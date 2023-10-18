@@ -1,6 +1,6 @@
 import axios from "axios"
 import { useState, useEffect } from "react"
-import styles from "./styles/gallery.module.css"
+import styles from "./style.module.css"
 import unlike from "./images/2.png"
 import like from "./images/1.png"
 import Image from 'next/image'

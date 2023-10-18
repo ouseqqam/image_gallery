@@ -2,9 +2,9 @@ import axios from 'axios'
 import { useEffect, useState } from 'react'
 import styles from './styles/gallery.module.css'
 import InfiniteScroll from 'react-infinite-scroll-component'
-import Gallery from './gallery'
+import Gallery from '../../components/gallery'
 import router from 'next/router'
-import Navbar from '../navbar'
+import Navbar from '../../components/navbar'
 // import like from "./images/2.png"
 // import unlike from "./images/1.png"
 
